@@ -1,54 +1,59 @@
+// ------------------------------------------------
+//   ===> Librerias
+// ------------------------------------------------
 const express = require('express');
 const cors = require('cors');
+
+// ------------------------------------------------
+//   ===> Configuracion de DB
+// ------------------------------------------------
 const { dbConennction } = require('../database/config');
 
+// ------------------------------------------------
+//   ===>            Inicio  Modulo            <===
+// ------------------------------------------------
 class Server {
+   constructor() {
+      this.app = express();
+      this.port = process.env.PORT;
+      this.authPath = '/api/auth';
+      this.usuariosPath = '/api/usuarios';
 
-    constructor() {
-        this.app  = express();
-        this.port = process.env.PORT;
-        this.usuariosPath = '/api/usuarios';
+      // Conectar a BD
+      this.conectarDB();
 
-        // Conectar a BD
-        this.conectarDB()
+      // Middlewares
+      this.middlewares();
 
-        // Middlewares
-        this.middlewares();
+      // Rutas de mi aplicación
+      this.routes();
+   }
 
-        // Rutas de mi aplicación
-        this.routes();
-    }
+   async conectarDB() {
+      await dbConennction();
+   }
 
-    async conectarDB () {
-        await dbConennction()
-    }
+   middlewares() {
+      // CORS
+      this.app.use(cors());
 
-    middlewares() {
+      // Lectura y parseo del body
+      this.app.use(express.json());
 
-        // CORS
-        this.app.use( cors() );
+      // Directorio Público
+      this.app.use(express.static('public'));
+   }
 
-        // Lectura y parseo del body
-        this.app.use( express.json() );
+   routes() {
+      this.app.use(this.authPath, require('../routes/auth'));
+      this.app.use(this.usuariosPath, require('../routes/usuarios'));
+   }
 
-        // Directorio Público
-        this.app.use( express.static('public') );
-
-    }
-
-    routes() {
-        this.app.use( this.usuariosPath, require('../routes/usuarios'));
-    }
-
-    listen() {
-        this.app.listen( this.port, () => {
-            console.log('Servidor corriendo en puerto', this.port );
-        });
-    }
-
+   listen() {
+      this.app.listen(this.port, () => {
+         console.log('Servidor corriendo en puerto', this.port);
+      });
+   }
 }
-
-
-
 
 module.exports = Server;
