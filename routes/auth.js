@@ -7,7 +7,7 @@ const { check } = require('express-validator');
 // ------------------------------------------------
 //  ===> Modulos + Controllers
 // ------------------------------------------------
-const { validarCampos } = require('../middlewares/validar-campos');
+const { validarCampos } = require('../middlewares');
 const { login, googleSigIn } = require('../controllers/auth');
 
 // ------------------------------------------------

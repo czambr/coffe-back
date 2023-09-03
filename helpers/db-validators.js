@@ -1,7 +1,7 @@
 // ------------------------------------------------
 //  ===> Modelos
 // ------------------------------------------------
-const Role = require('../models/rol');
+const Role = require('../models/role');
 const usuario = require('../models/usuario');
 
 // ------------------------------------------------
