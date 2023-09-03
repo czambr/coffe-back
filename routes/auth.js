@@ -8,7 +8,7 @@ const { check } = require('express-validator');
 //  ===> Modulos + Controllers
 // ------------------------------------------------
 const { validarCampos } = require('../middlewares/validar-campos');
-const { login } = require('../controllers/auth');
+const { login, googleSigIn } = require('../controllers/auth');
 
 // ------------------------------------------------
 //   ===>            Inicio  Modulo            <===
@@ -23,6 +23,12 @@ router.post(
       validarCampos,
    ],
    login
+);
+
+router.post(
+   '/google',
+   [check('id_token', 'id_token es necesario').not().isEmpty(), validarCampos],
+   googleSigIn
 );
 
 module.exports = router;
