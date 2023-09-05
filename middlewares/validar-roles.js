@@ -16,7 +16,7 @@ const esAdminRole = (req, res = response, next) => {
    const { rol, nombre } = req.usuario;
    if (rol !== 'ADMIN_ROLE') {
       return res.status(401).json({
-         msg: ` ${nombre} no es ADMINISTRADOR - No puede hacer esta operacion`,
+         msg: `${nombre} no es ADMINISTRADOR - No puede hacer esta operacion`,
       });
    }
 
