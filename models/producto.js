@@ -9,7 +9,7 @@ const { Schema, model } = require('mongoose');
 const ProductoSchema = Schema({
     nombre: {
         type: String,
-        require: [true, 'El nombre del producto es obligatorio'],
+        required: [true, 'El nombre del producto es obligatorio'],
         unique: true,
     },
     estado: {
@@ -29,7 +29,7 @@ const ProductoSchema = Schema({
     categoria: {
         type: Schema.Types.ObjectId,
         ref: 'Categoria',
-        require: true,
+        required: true,
     },
     descripcion: { type: String },
     disponible: { type: Boolean, default: true },

@@ -13,7 +13,7 @@ const { crearProducto,
     obtenerProducto,
     actualizarProducto,
     borrarProducto } = require('../controllers/productos');
-const { existeProductoPorId } = require('../helpers/db-validators');
+const { existeProductoPorId, existeCategoriaPorId } = require('../helpers/db-validators');
 
 // ------------------------------------------------
 //   ===>            Inicio  Modulo            <===
@@ -33,15 +33,16 @@ router.get('/:id', [
 // Crear un nuevo Producto - privado: Cualquier persona con token valido
 router.post('/', [
     validarJWT,
-    check('nombre', 'El nombre es obligatorio').not().isEmpty(),
+    check('nombre', 'El nombre de producto es obligatorio').not().isEmpty(),
+    check('categoria', 'No es un id de Mongo').isMongoId(),
+    check('categoria').custom(existeCategoriaPorId),
     validarCampos
 ], crearProducto);
 
 // Actualizar un registro por ID - Privado con token valido
 router.put('/:id', [
     validarJWT,
-    check('nombre', 'El nombre es obligatorio').not().isEmpty(),
-    check('id', 'No es un ID válido').isMongoId(),
+    // check('categoria', 'No es un id de Mongo').isMongoId(),
     check('id').custom(existeProductoPorId),
     validarCampos
 ], actualizarProducto);

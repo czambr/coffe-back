@@ -31,11 +31,13 @@ const obtenerProducto = async (req, res = response) => {
 
     // Busqueda de la Producto
     try {
-        const ProductoBuscada = await Producto.findById(id).populate('usuario', 'nombre');
+        const productoBuscado = await Producto.findById(id)
+            .populate('usuario', 'nombre')
+            .populate('categoria', 'nombre');
 
         res.status(200).json({
             msg: `Producto encontrada`,
-            ProductoBuscada,
+            productoBuscado,
         });
     } catch (error) {
         console.log(error);
@@ -48,26 +50,28 @@ const obtenerProducto = async (req, res = response) => {
 
 // ===> Creación de Producto
 const crearProducto = async (req, res = response) => {
-    const nombre = req.body.nombre.toUpperCase();
 
-    const ProductoDB = await Producto.findOne({ nombre });
-    if (ProductoDB) {
+    const { esado, usuario, ...body } = req.body;
+
+    const productoDB = await Producto.findOne({ nombre: body.nombre.toUpperCase() });
+    if (productoDB) {
         return res.status(400).json({
-            msg: `La Producto ${ProductoDB.nombre} ya existe`,
+            msg: `El Producto ${productoDB.nombre} ya existe`,
         });
     }
 
     // Generar la data a guardar
     const data = {
-        nombre,
+        ...body,
+        nombre: req.body.nombre.toUpperCase(),
         usuario: req.usuario._id,
     };
 
     // Guardar en BD
-    const Producto = new Producto(data);
-    await Producto.save();
+    const producto = new Producto(data);
+    await producto.save();
 
-    res.status(201).json(Producto);
+    res.status(201).json(producto);
 };
 
 // ===> Actualizar Producto
@@ -75,18 +79,20 @@ const actualizarProducto = async (req, res = response) => {
     const { id = '' } = req.params;
     const { estado, usuario, ...data } = req.body;
 
-    data.nombre = data.nombre.toUpperCase();
-    data.usuario = req.usuario._id;
+    if (data.nombre) {
+        data.nombre = data.nombre.toUpperCase();
+    }
 
+    data.usuario = req.usuario._id;
     try {
-        const Producto = await Producto.findByIdAndUpdate(id, data, { new: true });
+        const producto = await Producto.findByIdAndUpdate(id, data, { new: true });
         res.status(201).json({
-            msg: 'Producto modificada correctamente',
-            Producto,
+            msg: 'Producto modificado correctamente',
+            producto,
         });
     } catch (error) {
         return res.status(500).json({
-            msg: 'Error al actular la Producto',
+            msg: 'Error al actualizar el Producto',
             error,
         });
     }
@@ -99,15 +105,15 @@ const borrarProducto = async (req, res = response) => {
     const { id } = req.params;
 
     try {
-        const ProductoBorrada = await Producto.findByIdAndUpdate(
+        const productoBorrado = await Producto.findByIdAndUpdate(
             id,
             { estado: false },
             { new: true }
         );
 
         res.status(200).json({
-            msg: 'Producto Eliminada',
-            ProductoBorrada,
+            msg: 'Producto Eliminado',
+            productoBorrado,
         });
     } catch (error) {
         console.log(error);
