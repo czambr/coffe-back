@@ -1,5 +1,12 @@
+// ------------------------------------------------
+//  ===> Librerias
+// ------------------------------------------------
 const { OAuth2Client } = require('google-auth-library');
 const client = new OAuth2Client();
+
+// ------------------------------------------------
+//   ===>            Inicio  Modulo            <===
+// ------------------------------------------------
 
 async function googleVerify(token = '') {
    const ticket = await client.verifyIdToken({

@@ -1,9 +1,18 @@
+// ------------------------------------------------
+//  ===> Librerias
+// ------------------------------------------------
 const { response } = require("express");
 const { ObjectId } = require("mongoose").Types
 
-
+// ------------------------------------------------
+//  ===> Modelos
+// ------------------------------------------------
 const { Usuario, Categoria, Producto } = require("../models");
 
+
+// ------------------------------------------------
+//   ===>            Inicio  Modulo            <===
+// ------------------------------------------------
 const coleccionesPermitidas = [
     'categorias',
     'usuarios',

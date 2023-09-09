@@ -5,7 +5,7 @@ const { response, request } = require('express');
 const brcruptjs = require('bcryptjs');
 
 // ------------------------------------------------
-//  ===> Modulos + Modelos
+//  ===> Modulos + helpers
 // ------------------------------------------------
 const Usuario = require('../models/usuario');
 

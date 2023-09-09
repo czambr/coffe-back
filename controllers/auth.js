@@ -5,7 +5,7 @@ const { response, json } = require('express');
 const bcryptjs = require('bcryptjs');
 
 // ------------------------------------------------
-//  ===> Modulos + Controllers
+//  ===> Modulos + helpers
 // ------------------------------------------------
 const Usuario = require('../models/usuario');
 const { generarJWT } = require('../helpers/generar-jwt');
